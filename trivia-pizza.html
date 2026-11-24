@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Trivia FADU · Tabla de pizza</title>
+<style>
+:root{--bg:#fff1d6;--card:#fffdf7;--ink:#3a2418;--muted:#8a6b55;--red:#d6382a;--yel:#f4b73a;--grn:#4a8a3a;--line:#f0d9ab;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#2a1a12;--card:#3a251a;--ink:#fff1d6;--muted:#d1b392;--line:#5a3a28}}
+:root[data-theme="dark"]{--bg:#2a1a12;--card:#3a251a;--ink:#fff1d6;--muted:#d1b392;--line:#5a3a28}
+*{box-sizing:border-box}
+body{margin:0;color:var(--ink);font-family:system-ui,-apple-system,'Segoe UI',sans-serif;line-height:1.45;background-color:var(--bg);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cg opacity='.22'%3E%3Cg transform='translate(10 14) rotate(-20 25 25)'%3E%3Cpath d='M25 2 L47 46 Q25 56 3 46 Z' fill='%23f4b73a' stroke='%23d9923b' stroke-width='4'/%3E%3Ccircle cx='20' cy='28' r='5' fill='%23d6382a'/%3E%3Ccircle cx='32' cy='36' r='4.5' fill='%23d6382a'/%3E%3Ccircle cx='25' cy='16' r='3.5' fill='%23d6382a'/%3E%3C/g%3E%3Cg transform='translate(68 66) rotate(25 25 25)'%3E%3Cpath d='M25 2 L47 46 Q25 56 3 46 Z' fill='%23f4b73a' stroke='%23d9923b' stroke-width='4'/%3E%3Ccircle cx='22' cy='30' r='5' fill='%23d6382a'/%3E%3Ccircle cx='31' cy='20' r='3.5' fill='%234a8a3a'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
+main{max-width:640px;margin:0 auto;padding:12px 16px 48px}
+.hero{text-align:center}
+.hero svg{width:100%;max-width:340px;height:auto;filter:drop-shadow(0 6px 8px rgba(0,0,0,.25))}
+h1{font-size:2rem;margin:0;line-height:1.1;font-weight:900;color:var(--red);text-shadow:2px 2px 0 var(--yel)}
+.sub{color:var(--muted);margin:4px 0 18px;font-weight:600}
+nav{display:flex;gap:8px;margin-bottom:18px}
+nav button{flex:1;padding:12px 4px;border:2px solid var(--ink);background:var(--card);color:var(--ink);border-radius:999px;font-size:1rem;font-weight:700;cursor:pointer}
+nav button.on{background:var(--red);color:#fff;border-color:var(--red);box-shadow:0 3px 0 #8f2218}
+section{display:none}
+section.on{display:block}
+ol.rules{padding:0;margin:0;list-style:none;counter-reset:r}
+ol.rules li{counter-increment:r;background:var(--card);border:2px solid var(--line);border-radius:16px;padding:14px 14px 14px 60px;margin-bottom:10px;position:relative}
+ol.rules li::before{content:counter(r);position:absolute;left:14px;top:12px;width:34px;height:34px;border-radius:50%;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800}
+ol.rules li:nth-child(3n+2)::before{background:var(--grn)}
+ol.rules li:nth-child(3n)::before{background:var(--yel);color:#3a2418}
+ol.rules b{display:block}
+.q{background:var(--card);border:2px solid var(--line);border-left:8px solid var(--red);border-radius:12px;padding:10px 14px;margin-bottom:8px}
+.q:nth-child(3n+2){border-left-color:var(--grn)}
+.q:nth-child(3n){border-left-color:var(--yel)}
+.q .t{font-weight:800;margin-bottom:4px}
+.q .a{display:flex;align-items:center;gap:8px}
+.q .a span.l{color:var(--muted);font-size:.85rem;min-width:68px}
+.badge{display:inline-flex;width:30px;height:30px;border-radius:50%;background:var(--red);color:#fff;font-weight:800;align-items:center;justify-content:center;flex:none}
+.q input,.q select{font:inherit;padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);width:100%}
+.bar{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.bar button{padding:8px 14px;border:2px solid var(--ink);background:var(--card);color:var(--ink);border-radius:999px;cursor:pointer;font-weight:600}
+.note{color:var(--muted);font-size:.85rem}
+.pend{color:var(--muted);font-style:italic}
+
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.nb{aspect-ratio:1;border:2px solid #8f2218;border-bottom-width:6px;background:var(--red);color:#fff;border-radius:16px;font-size:1.5rem;font-weight:900;cursor:pointer;transition:transform .08s,border-bottom-width .08s}
+.nb:nth-child(3n+2){background:var(--grn);border-color:#2c5a22}
+.nb:nth-child(3n){background:var(--yel);border-color:#b57d12;color:#3a2418}
+.nb:active,.ob:active{transform:translateY(4px);border-bottom-width:2px}
+.nb.ok{outline:4px solid #2fb344}.nb.bad{outline:4px solid #222;opacity:.75}
+.qc{background:var(--card);border:2px solid var(--line);border-radius:18px;padding:16px}
+.qn{font-weight:800;color:var(--red);margin-bottom:4px}
+.qt{font-size:1.15rem;font-weight:700;margin-bottom:14px}
+.ob{display:block;width:100%;text-align:left;margin-bottom:10px;padding:14px;border:2px solid #b57d12;border-bottom-width:6px;border-radius:14px;background:var(--yel);color:#3a2418;font:inherit;font-weight:700;cursor:pointer;transition:transform .08s,border-bottom-width .08s,background .2s}
+.ob.g{background:#2fb344;border-color:#1c7a2b;color:#fff}
+.ob.r{background:#d6382a;border-color:#8f2218;color:#fff}
+.ob.r.pick{animation:sh .4s}
+.ob[disabled]{cursor:default}
+.ob[disabled]:active{transform:none;border-bottom-width:6px}
+@keyframes sh{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.msg{font-size:1.3rem;font-weight:900;text-align:center;margin:6px 0 12px;min-height:1.6em}
+.row{display:flex;gap:8px}
+.row button{flex:1;padding:10px;border:2px solid var(--ink);background:var(--card);color:var(--ink);border-radius:999px;font-weight:700;cursor:pointer}
+.cf{position:fixed;top:-16px;width:9px;height:14px;z-index:99;pointer-events:none;animation:fall linear forwards}
+@keyframes fall{to{transform:translate(var(--dx),108vh) rotate(720deg)}}
+#flash{position:fixed;inset:0;background:rgba(214,56,42,.6);z-index:98;pointer-events:none;opacity:0;animation:fl 1.7s forwards}
+@keyframes fl{0%{opacity:0}12%{opacity:1}70%{opacity:1}100%{opacity:0}}
+</style>
+</head>
+<body>
+<main>
+<div class="hero">
+<svg viewBox="0 0 320 310" role="img" aria-label="Pizza sobre una tabla con separador de metal y flecha giratoria">
+<circle cx="160" cy="98" r="90" fill="#d9923b"/>
+<circle cx="160" cy="98" r="78" fill="#d6382a"/>
+<circle cx="160" cy="98" r="72" fill="#f6c84c"/>
+<g stroke="#d9923b" stroke-width="2" opacity=".6"><path d="M160 26V170M88 98H232M109 47L211 149M211 47L109 149"/></g>
+<g fill="#c0301f"><circle cx="130" cy="70" r="11"/><circle cx="190" cy="76" r="11"/><circle cx="160" cy="112" r="11"/><circle cx="118" cy="126" r="9"/><circle cx="204" cy="128" r="9"/><circle cx="160" cy="58" r="7"/></g>
+<g fill="#4a8a3a"><ellipse cx="144" cy="92" rx="8" ry="4" transform="rotate(-30 144 92)"/><ellipse cx="180" cy="104" rx="8" ry="4" transform="rotate(25 180 104)"/><ellipse cx="136" cy="140" rx="8" ry="4" transform="rotate(10 136 140)"/><ellipse cx="190" cy="52" rx="7" ry="3.5" transform="rotate(-20 190 52)"/></g>
+<defs>
+<linearGradient id="inox" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f4f6f8"/><stop offset=".35" stop-color="#aeb4ba"/><stop offset=".6" stop-color="#e9ecef"/><stop offset="1" stop-color="#8a9097"/></linearGradient>
+</defs>
+<ellipse cx="160" cy="258" rx="146" ry="52" fill="#8a5a30"/>
+<ellipse cx="160" cy="250" rx="146" ry="56" fill="#b97a45"/>
+<g stroke="#9a6334" stroke-width="2" opacity=".6" fill="none"><ellipse cx="160" cy="250" rx="122" ry="46"/><ellipse cx="160" cy="250" rx="96" ry="36"/></g>
+<g stroke="#7d848b" stroke-width="7" stroke-linecap="round"><path d="M160 195V305M16 250H304M57 210L263 290M263 210L57 290"/></g>
+<g stroke="url(#inox)" stroke-width="3" stroke-linecap="round"><path d="M160 195V305M16 250H304M57 210L263 290M263 210L57 290"/></g>
+<g>
+<path d="M160 204 L172 250 L160 242 L148 250 Z" fill="url(#inox)" stroke="#5f656b" stroke-width="2" stroke-linejoin="round"/>
+<animateTransform attributeName="transform" type="rotate" from="0 160 250" to="360 160 250" dur="5s" repeatCount="indefinite"/>
+</g>
+<circle cx="160" cy="250" r="10" fill="url(#inox)" stroke="#5f656b" stroke-width="2"/>
+</svg>
+<h1>Trivia FADU</h1>
+<p class="sub">Tabla de pizza · Diseño Industrial del Producto</p>
+</div>
+<nav>
+<button id="b1" class="on" onclick="show(1)">Reglas</button>
+<button id="b3" onclick="show(3)">Jugar</button>
+<button id="b2" onclick="show(2)">Respuestas</button>
+</nav>
+
+<section id="s1" class="on">
+<ol class="rules">
+<li><b>Gira la flecha</b>Quien tiene el turno hace girar la flecha del centro de la tabla.</li>
+<li><b>Responde quien señale la flecha</b>La persona a la que apunta la flecha saca una carta del compartimiento, la lee en voz alta y responde.</li>
+<li><b>Sentido horario</b>El turno siempre pasa en el sentido de las agujas del reloj.</li>
+<li><b>Una respuesta por pregunta</b>Cada pregunta tiene 4 opciones y solo una es correcta. Se elige una sola, sin cambiarla.</li>
+<li><b>Verificar la respuesta</b>Después de responder, se escanea el QR para ver si fue correcta.</li>
+<li><b>Sumar puntos</b>Acierto: 1 punto. Error: 0 puntos y la carta vuelve al fondo del compartimiento.</li>
+<li><b>Sin ayuda</b>No se puede consultar el celular ni pedir ayuda antes de responder.</li>
+<li><b>Gana quien llegue primero a 5 puntos</b>Se puede acordar otro número antes de empezar.</li>
+</ol>
+</section>
+
+<section id="s3"><div id="play"></div></section>
+
+<section id="s2">
+<div class="bar">
+<button id="eb" onclick="toggleEdit()">Editar respuestas</button>
+<button onclick="resetAll()">Restablecer</button>
+</div>
+<p class="note" id="en" style="display:none">Los cambios se guardan solo en este dispositivo.</p>
+<div id="list"></div>
+</section>
+</main>
+<script>
+// ====== RESPUESTAS OFICIALES (editables) ======
+// c = letra correcta (A, B, C o D), t = texto de la respuesta
+var Q=[
+["¿En qué año se fundó oficialmente la Facultad de Arquitectura de la Udelar?",["1886","1915","1925","1948"],1],
+["¿Dónde comenzaron a dictarse los estudios de Arquitectura en Uruguay antes de existir la Facultad de Arquitectura independiente?",["Facultad de Ingeniería","Escuela Nacional de Bellas Artes","Facultad de Matemáticas y Ramas Anexas","Universidad del Trabajo"],2],
+["¿En qué año comenzó a funcionar la Escuela Universitaria Centro de Diseño (EUCD), antecesora de la actual formación universitaria en Diseño Industrial?",["1975","1982","1988","1995"],2],
+["¿En qué año se incorporó el Centro de Diseño Industrial a la Universidad de la República, dentro de la Facultad de Arquitectura?",["1998","2005","2009","2015"],2],
+["¿En qué año la Facultad de Arquitectura pasó a llamarse Facultad de Arquitectura, Diseño y Urbanismo (FADU)?",["2005","2009","2010","2015"],3],
+["¿En qué año se creó el Centro de Diseño Industrial (CDI), antecedente de la EUCD?",["1978","1983","1987","1992"],2],
+["¿Desde qué año se formaban profesionales en Diseño de Producto y Diseño Textil y Moda en el Centro de Diseño Industrial?",["1980","1988","1996","2002"],1],
+["¿Bajo la órbita de qué organismo funcionó originalmente el Centro de Diseño Industrial?",["Ministerio de Educación y Cultura","Ministerio de Industria","Universidad de la República","Intendencia de Montevideo"],0],
+["¿En qué año se aprobó la ordenanza que transformó al Centro de Diseño en Escuela Universitaria Centro de Diseño (EUCD)?",["2005","2008","2010","2013"],2],
+["¿Cuáles son las dos orientaciones principales de la Licenciatura en Diseño Industrial?",["Gráfico y Audiovisual","Producto y Textil-Indumentaria","Arquitectura y Urbanismo","Interiorismo y Paisajismo"],1],
+["¿Quién fue la primera mujer en egresar de la Facultad de Arquitectura de Uruguay?",["Paulina Luisi","Julia Guarino Fiechter","Adela Yanuzzi","Sara Morialdo"],1],
+["¿En qué año egresó Julia Guarino Fiechter, la primera arquitecta del Uruguay?",["1915","1920","1923","1930"],2],
+["¿En qué avenida y bulevar se encuentra la sede central de FADU?",["Avenida Italia y Bulevar Batlle y Ordóñez","Bulevar Artigas y Bulevar España","Avenida Rivera y Bulevar Artigas","18 de Julio y Ejido"],1],
+["¿Qué arquitectos estuvieron a cargo del proyecto del emblemático edificio de la Facultad de Arquitectura?",["Eladio Dieste y Julio Vilamajó","Mario Payssé Reyes y Rafael Lorente","Román Fresnedo Siri y Mario Muccinelli","Le Corbusier y Frank Lloyd Wright"],2],
+["¿En qué año se incorporó el primer curso de Urbanismo a la Facultad de Arquitectura?",["1915","1923","1948","1959"],1],
+["¿En qué año se creó el Instituto de Diseño de la Facultad de Arquitectura, a partir de la reorientación del Instituto de Estética y Artes Plásticas?",["1944","1952","1959","1973"],2]
+];
+// Respuestas oficiales: se generan desde las preguntas (editables en la pestaña Respuestas)
+var DEFAULTS=Q.map(function(q){return{c:"ABCD".charAt(q[2]),t:q[1][q[2]]}});
+// ==============================================
+var data=JSON.parse(JSON.stringify(DEFAULTS)),editing=false,KEY="trivia-fadu-v3";
+try{var s=localStorage.getItem(KEY);if(s){var p=JSON.parse(s);if(Array.isArray(p)&&p.length===DEFAULTS.length)data=p}}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(data))}catch(e){}}
+function show(n){for(var i=1;i<=3;i++){document.getElementById("s"+i).className=i==n?"on":"";document.getElementById("b"+i).className=i==n?"on":""}if(n==3)playHome()}
+function esc(x){return String(x).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function render(){
+var h="";
+data.forEach(function(d,i){
+h+='<div class="q"><div class="t">Pregunta '+(i+1)+'</div>';
+if(editing){
+h+='<div class="a"><span class="l">Correcta</span><select onchange="upd('+i+',\'c\',this.value)">';
+["","A","B","C","D"].forEach(function(o){h+='<option value="'+o+'"'+(d.c===o?" selected":"")+'>'+(o||"—")+'</option>'});
+h+='</select></div><div class="a" style="margin-top:6px"><span class="l">Texto</span><input value="'+esc(d.t)+'" placeholder="Texto de la respuesta (opcional)" oninput="upd('+i+',\'t\',this.value)"></div>';
+}else{
+h+='<div class="a">'+(d.c?'<span class="badge">'+d.c+'</span><span>'+esc(d.t)+'</span>':'<span class="pend">Pendiente</span>')+'</div>';
+}
+h+='</div>';
+});
+document.getElementById("list").innerHTML=h;
+}
+function upd(i,k,v){data[i][k]=v;save()}
+function toggleEdit(){editing=!editing;document.getElementById("eb").textContent=editing?"Listo":"Editar respuestas";document.getElementById("en").style.display=editing?"block":"none";render()}
+function resetAll(){if(confirm("¿Borrar los cambios de este dispositivo?")){data=JSON.parse(JSON.stringify(DEFAULTS));try{localStorage.removeItem(KEY)}catch(e){}render()}}
+
+var cur=-1,locked=false,done={};
+function playHome(){
+cur=-1;var h='<p class="note" style="margin-top:0">Tocá una pregunta para jugar.</p><div class="grid">';
+for(var i=0;i<Q.length;i++)h+='<button class="nb'+(done[i]==1?' ok':done[i]==2?' bad':'')+'" onclick="openQ('+i+')">'+(i+1)+'</button>';
+document.getElementById("play").innerHTML=h+'</div>';
+}
+function ci(i){var k="ABCD".indexOf(data[i].c);return k>=0?k:Q[i][2]}
+function openQ(i){
+cur=i;locked=false;
+var h='<div class="qc"><div class="qn">Pregunta '+(i+1)+' de '+Q.length+'</div><div class="qt">'+esc(Q[i][0])+'</div>';
+Q[i][1].forEach(function(o,k){h+='<button class="ob" id="o'+k+'" onclick="pick('+k+')">'+"ABCD".charAt(k)+") "+esc(o)+'</button>'});
+h+='<div class="msg" id="msg"></div><div class="row"><button onclick="playHome()">Preguntas</button><button onclick="openQ('+((i+1)%Q.length)+')">Siguiente</button></div></div>';
+document.getElementById("play").innerHTML=h;
+}
+function pick(k){
+if(locked)return;locked=true;
+var c=ci(cur),ok=k===c;
+for(var j=0;j<4;j++){var b=document.getElementById("o"+j);b.disabled=true;b.className="ob "+(j===c?"g":"r")+(j===k?" pick":"")}
+done[cur]=ok?1:2;
+document.getElementById("msg").textContent=ok?"¡Acertaste! 🎉":"Casi... la correcta era la "+"ABCD".charAt(c);
+if(ok)confetti();else flash();
+}
+function confetti(){
+var cols=["#d6382a","#f4b73a","#4a8a3a","#2fb3e0","#e85aa0","#fff"];
+for(var i=0;i<80;i++){var d=document.createElement("div");d.className="cf";
+d.style.left=Math.random()*100+"%";d.style.background=cols[i%cols.length];
+d.style.setProperty("--dx",(Math.random()*160-80)+"px");
+d.style.animationDuration=(1.8+Math.random()*1.6)+"s";d.style.animationDelay=(Math.random()*.5)+"s";
+document.body.appendChild(d);(function(e){setTimeout(function(){e.remove()},4200)})(d)}
+}
+function flash(){var f=document.createElement("div");f.id="flash";document.body.appendChild(f);setTimeout(function(){f.remove()},1800)}
+render();
+</script>
+</body>
+</html>
